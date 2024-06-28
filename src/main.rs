@@ -1,11 +1,17 @@
-mod App;
+mod app;
+mod cell;
+mod errors;
+mod playground;
 mod tui;
+mod worm;
 
-use std::io::Result;
+use crate::app::App;
 
-fn main() -> Result<()> {
+fn main() -> errors::Result {
+    errors::install_hooks()?;
+
     let mut terminal = tui::init()?;
-    let app_result = App::default().run(&mut terminal);
+    App::default().run(&mut terminal)?;
     tui::restore()?;
-    app_result
+    Ok(())
 }
